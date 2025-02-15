@@ -7,7 +7,7 @@ import User from './components/user/User.vue';
 import { io } from 'socket.io-client';
 
 const active = ref(0);
-const socket = io('http://localhost:3000');
+const socket = io('http://113.44.241.178/:3000');
 const showInit = ref(false);
 const username = ref("");
 onMounted(() => {
