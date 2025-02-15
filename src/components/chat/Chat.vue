@@ -5,22 +5,30 @@ import type { Socket } from 'socket.io-client';
 import dayjs from 'dayjs';
 
 const props = defineProps<{ socket: Socket, username: string }>();
+
+const list = ref<{ username: string, message: string, timestamp: string }[]>([]);
+const value = ref('');
+
+const scrollToBottom = () => {
+    nextTick(() => {
+        const listElement = document.querySelector('.list');
+        if (listElement) {
+            listElement.scrollTop = listElement.scrollHeight;
+        }
+    });
+};
+
 onMounted(() => {
     props.socket.on('chat history', (msgs) => {
         list.value = msgs;
-        nextTick(() => {
-            const listElement = document.querySelector('.list');
-            if (listElement) {
-                listElement.scrollTop = listElement.scrollHeight;
-            }
-        });
+        scrollToBottom();
     });
     props.socket.on('chat message', (msg) => {
         list.value.push(msg);
+        scrollToBottom();
     });
 });
-const list = ref<{ username: string, message: string, timestamp: string }[]>([]);
-const value = ref('');
+
 const onSend = () => {
     props.socket.emit('chat message', { username: props.username, message: value.value });
     value.value = '';
