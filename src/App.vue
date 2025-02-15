@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { Dialog, Field, Tabbar, TabbarItem } from 'vant';
+import { closeNotify, Dialog, Field, showNotify, Tabbar, TabbarItem } from 'vant';
 import Chat from './components/chat/Chat.vue';
 import Apps from './components/apps/Apps.vue';
 import User from './components/user/User.vue';
 import { io } from 'socket.io-client';
 
 const active = ref(0);
+// const socket = io('http://localhost:3000');
 const socket = io('http://113.44.241.178:3000');
 const showInit = ref(false);
 const username = ref("");
+const userCount = ref(0);
 onMounted(() => {
   const localUsername = localStorage.getItem('username');
   if (localUsername) {
@@ -18,12 +20,24 @@ onMounted(() => {
   } else {
     showInit.value = true;
   }
+  socket.on('user count', (count) => {
+    showNotify({ type: 'primary', message: `当前在线人数: ${count}`, duration: 0 });
+    userCount.value = count;
+  });
 });
 const beforeClose = () => {
   if (username.value) {
     localStorage.setItem('username', username.value);
     socket.emit('join user', { username: username.value });
     return true;
+  }
+};
+const onTabbarChange = (value: number) => {
+  active.value = value;
+  if (active.value === 0) {
+    showNotify({ type: 'primary', message: `当前在线人数: ${userCount.value}`, duration: 0 });
+  } else {
+    closeNotify();
   }
 };
 </script>
@@ -41,10 +55,10 @@ const beforeClose = () => {
       <Apps />
     </div>
     <div v-show="active === 2">
-      <User />
+      <User :username="username" />
     </div>
 
-    <Tabbar v-model="active" safe-area-inset-bottom>
+    <Tabbar v-model="active" safe-area-inset-bottom @change="onTabbarChange">
       <TabbarItem icon="chat-o">聊天室</TabbarItem>
       <TabbarItem icon="apps-o">游戏中心</TabbarItem>
       <TabbarItem icon="user-o">我的</TabbarItem>

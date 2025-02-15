@@ -52,7 +52,8 @@ const onSend = () => {
 </template>
 <style scoped>
 .list {
-    height: calc(100vh - 50px - 64px);
+    padding-top: 50px;
+    height: calc(100vh - 50px - 50px - 64px);
     overflow-y: auto;
 }
 
