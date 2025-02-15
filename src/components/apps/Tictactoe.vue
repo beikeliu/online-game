@@ -1,4 +1,50 @@
-<!-- <script setup lang="ts"></script> -->
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue';
+import { showDialog } from "vant";
+
+const props = defineProps<{onClickLeft: Function}>();
+
+// const socket = ref(null);
+const board = ref(Array(9).fill(null));
+const playerId = ref(null);
+const players = ref([]);
+const currentTurn = ref("X");
+const winner = ref(null);
+const inGame = ref(false);
+
+const isMyTurn = computed(() => {
+    return inGame.value && players.value[currentTurn.value === "X" ? 0 : 1] === playerId.value;
+});
+
+const makeMove = (index: number) => {
+    console.log(index);
+    
+    // if (isMyTurn.value && !board.value[index]) {
+    //     socket.value.emit("makeMove", { index });
+    // }
+};
+
+onMounted(() => {
+    showDialog({ message: '正在开发中...', confirmButtonText: '被迫返回/(ㄒoㄒ)/~~' }).then(() => {
+        props.onClickLeft();
+    });
+
+    // socket.value = io("http://localhost:3000");
+
+    // socket.value.on("updateGame", (game) => {
+    //     board.value = game.board;
+    //     players.value = game.players;
+    //     currentTurn.value = game.currentTurn;
+    //     inGame.value = game.players.includes(socket.value.id);
+    //     playerId.value = socket.value.id;
+    // });
+
+    // socket.value.on("gameOver", ({ winner: gameWinner }) => {
+    //     winner.value = gameWinner;
+    // });
+});
+</script>
+
 <template>
     <div class="game">
         <h2 v-if="winner">{{ winner === 'Opponent disconnected' ? '对手断开连接' : `获胜者: ${winner}` }}</h2>
@@ -11,60 +57,6 @@
         </div>
     </div>
 </template>
-<script>
-import { io } from "socket.io-client";
-import { showDialog } from "vant";
-
-export default {
-    props: {
-        onClickLeft: Function,
-    },
-    data() {
-        return {
-            socket: null,
-            board: Array(9).fill(null),
-            playerId: null,
-            players: [],
-            currentTurn: "X",
-            winner: null,
-            inGame: false,
-        };
-    },
-    computed: {
-        isMyTurn() {
-            return this.inGame && this.players[this.currentTurn === "X" ? 0 : 1] === this.playerId;
-        },
-    },
-    methods: {
-        // joinGame() {
-        //     this.socket.emit("joinGame");
-        // },
-        // makeMove(index) {
-        //     if (this.isMyTurn && !this.board[index]) {
-        //         this.socket.emit("makeMove", { index });
-        //     }
-        // },
-    },
-    mounted() {
-        showDialog({ message: '正在开发中...', confirmButtonText: '被迫返回/(ㄒoㄒ)/~~' }).then(() => {
-            this.onClickLeft();
-        });
-        // this.socket = io("http://localhost:3000");
-
-        // this.socket.on("updateGame", (game) => {
-        //     this.board = game.board;
-        //     this.players = game.players;
-        //     this.currentTurn = game.currentTurn;
-        //     this.inGame = game.players.includes(this.socket.id);
-        //     this.playerId = this.socket.id;
-        // });
-
-        // this.socket.on("gameOver", ({ winner }) => {
-        //     this.winner = winner;
-        // });
-    },
-};
-</script>
 
 <style scoped>
 .game {
