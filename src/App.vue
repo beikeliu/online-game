@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, KeepAlive } from 'vue';
+import { onMounted, ref } from 'vue';
 import { Dialog, Field, Tabbar, TabbarItem } from 'vant';
 import { RouterView } from 'vue-router';
 import { useIndexStore } from './store';
