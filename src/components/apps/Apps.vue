@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { List, Cell, NavBar } from 'vant';
 import { ref } from 'vue';
-import { appMap } from './map';
+import { appMap } from '@/utils/constant';
 import Tictactoe from './Tictactoe.vue';
 
 const index = ref(0);

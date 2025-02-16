@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { nextTick, onMounted, ref } from 'vue';
-import { List, Cell, Field, Button } from 'vant';
-import type { Socket } from 'socket.io-client';
+import { List, Cell, Field, Button, Notify } from 'vant';
 import dayjs from 'dayjs';
+import { useIndexStore } from '@/store';
 
-const props = defineProps<{ socket: Socket, username: string }>();
-
+const store = useIndexStore();
 const list = ref<{ username: string, message: string, timestamp: string }[]>([]);
 const value = ref('');
 
@@ -19,22 +18,25 @@ const scrollToBottom = () => {
 };
 
 onMounted(() => {
-    props.socket.on('chat history', (msgs) => {
+    store.socket.on('chat history', (msgs) => {
         list.value = msgs;
         scrollToBottom();
     });
-    props.socket.on('chat message', (msg) => {
+    store.socket.on('chat message', (msg) => {
         list.value.push(msg);
         scrollToBottom();
     });
 });
 
 const onSend = () => {
-    props.socket.emit('chat message', { username: props.username, message: value.value });
+    store.socket.emit('chat message', { username: store.username, message: value.value });
     value.value = '';
 };
 </script>
 <template>
+    <Notify show type="primary">
+        当前在线人数: {{ store.userCount }}
+    </Notify>
     <div class="list">
         <List>
             <Cell v-for="item in list" :key="item.timestamp" :title="`${item.username}: ${item.message}`">
@@ -54,7 +56,7 @@ const onSend = () => {
 <style scoped>
 .list {
     padding-top: 50px;
-    height: calc(100vh - 50px - 50px - 64px);
+    height: calc(100vh - 180px);
     overflow-y: auto;
 }
 

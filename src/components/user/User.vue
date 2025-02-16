@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { List, Cell } from 'vant';
+import { useIndexStore } from '@/store';
 
-const props = defineProps<{ username: string }>();
+const store = useIndexStore();
 </script>
 <template>
     <List>
-        <Cell :title="`昵称：${props.username}`"></Cell>
+        <Cell :title="`昵称：${store.username}`"></Cell>
         <Cell title="联系人"></Cell>
         <Cell title="积分排行"></Cell>
         <Cell title="好友动态"></Cell>
