@@ -45,7 +45,8 @@ const onSend = () => {
     <div class="field">
         <Field v-model="value" placeholder="请输入" maxlength="100">
             <template #button>
-                <Button size="small" type="primary" :style="{ width: '60px' }" @click="onSend">发送</Button>
+                <Button size="small" type="primary" :disabled="!value" :style="{ width: '60px' }"
+                    @click="onSend">发送</Button>
             </template>
         </Field>
     </div>

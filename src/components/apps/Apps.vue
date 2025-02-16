@@ -18,7 +18,7 @@ const onClickLeft = () => {
         </div>
         <div v-else>
             <List>
-                <Cell title="井字棋" @click="() => { index = 1 }">0 / 2</Cell>
+                <Cell title="井字棋" @click="() => { index = 1 }">2人/房</Cell>
             </List>
         </div>
     </div>
