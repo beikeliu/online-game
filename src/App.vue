@@ -13,7 +13,7 @@ onMounted(() => {
   const localUsername = localStorage.getItem('username');
   if (localUsername) {
     store.setUsername(localUsername);
-    // socket.emit('join user', { username: localUsername });
+    store.socket.emit('join user', { username: localUsername });
   } else {
     showInit.value = true;
   }
@@ -21,8 +21,9 @@ onMounted(() => {
 
 const beforeClose = () => {
   if (username) {
+    store.setUsername(username.value);
     localStorage.setItem('username', username.value);
-    // socket.emit('join user', { username: username.value });
+    store.socket.emit('join user', { username: username.value });
     return true;
   }
 };
