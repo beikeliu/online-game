@@ -14,6 +14,7 @@ const clearCache = () => {
     })
         .then(() => {
             localStorage.clear();
+            location.reload();
         })
         .catch(() => {
             // on cancel
