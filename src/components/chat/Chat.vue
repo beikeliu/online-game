@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from 'vue';
+import { nextTick, onActivated, onMounted, ref } from 'vue';
 import { List, Cell, Field, Button, Notify } from 'vant';
 import dayjs from 'dayjs';
 import { useIndexStore } from '@/store';
@@ -27,15 +27,20 @@ onMounted(() => {
         scrollToBottom();
     });
     store.socket.on('user count', (count) => {
-        console.log('user count', count);
         store.setUserCount(count);
     });
 });
+
+onActivated(() => {
+    scrollToBottom();
+});
+
 
 const onSend = () => {
     store.socket.emit('chat message', { username: store.username, message: value.value });
     value.value = '';
 };
+
 </script>
 <template>
     <Notify show type="primary">
