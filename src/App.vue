@@ -17,6 +17,9 @@ onMounted(() => {
   } else {
     showInit.value = true;
   }
+  store.socket.on('user count', (count) => {
+    store.setUserCount(count);
+  });
 });
 
 const beforeClose = () => {

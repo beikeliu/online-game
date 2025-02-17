@@ -9,8 +9,8 @@ export const useIndexStore = defineStore('index', () => {
     const setUsername = (name: string) => {
         username.value = name;
     }
-    socket.on('user count', (count) => {
+    const setUserCount = (count: number) => {
         userCount.value = count;
-    });
-    return { socket, username, setUsername, userCount };
+    }
+    return { socket, username, setUsername, userCount, setUserCount };
 })

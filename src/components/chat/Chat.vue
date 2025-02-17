@@ -26,6 +26,10 @@ onMounted(() => {
         list.value.push(msg);
         scrollToBottom();
     });
+    store.socket.on('user count', (count) => {
+        console.log('user count', count);
+        store.setUserCount(count);
+    });
 });
 
 const onSend = () => {
